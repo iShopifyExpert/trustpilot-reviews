@@ -1,0 +1,123 @@
+{%- if section.settings.divider -%}<div class="section--divider">{%- endif -%}
+
+<div class="page-width" data-aos="logo__animation">
+  {%- if section.settings.title != blank -%}
+    <div class="section-header">
+      <h2 class="section-header__title">{{ section.settings.title | escape }}</h2>
+    </div>
+  {% endif %}
+
+  {% if section.blocks.size > 0 %}
+    <div class="grid grid--uniform trustpilot--{{ section.id }}">
+      {%- for block in section.blocks -%}
+        <div class="grid__item small--one-half medium-up--one-quarter aos-init aos-animate" {{ block.shopify_attributes }}>
+          <div class="trustpilot-grid">
+            {% if block.settings.client_image != blank %}
+            {%- assign img_url = block.settings.client_image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+            <img class="logo-bar__image lazyload"
+                data-src="{{ img_url }}"
+                data-widths="[180, 360, 540, 720]"
+                data-aspectratio="{{ block.settings.client_image.aspect_ratio }}"
+                data-sizes="auto"
+                alt="{{ block.settings.image.alt }}">
+            {% else %}
+            {{ 'logo' | placeholder_svg_tag: 'placeholder-svg' }}
+            {% endif %}
+            <p class="client-name">{% if block.settings.client_name != blank %}{{ block.settings.client_name }}{% else %}Client Name{% endif %}</p>
+            <img class="trustpilot-stars" src="{{'stars-5.png' | asset_url}}" alt="5 Stars Ratings">
+            <p class="client-review">{% if block.settings.client_review != blank %}{{ block.settings.client_review }}{% else %}Add Client Review here{% endif %}</p>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  {% endif %}
+</div>
+
+{%- if section.settings.divider -%}</div>{%- endif -%}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/prism.min.js"></script>
+<script src="https://unpkg.com/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"></script>
+<script>
+  $('.trustpilot--{{ section.id }}').masonry({
+    itemSelector: '.grid__item',
+    columnWidth: '.medium-up--one-quarter',
+    horizontalOrder: true,
+  });
+</script>
+<style>
+  .trustpilot--{{ section.id }} {
+    display: inline-block;
+    width: 100%;
+    height: 100% !important;
+    min-height: 900px;
+  }
+  .trustpilot--{{ section.id }} .grid__item {
+    height: 370px;
+  }
+</style>
+
+{% schema %}
+  {
+    "name": "Trustpilot",
+    "class": "index-section section-trustpilot",
+    "max_blocks": 10,
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading"
+      },
+      {
+        "type": "checkbox",
+        "id": "divider",
+        "label": "Show section divider",
+        "default": false
+      }
+    ],
+    "blocks": [
+      {
+        "type": "review",
+        "name": "Review",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "client_image",
+            "label": "Client Image"
+          },
+          {
+            "type": "text",
+            "id": "client_name",
+            "label": "Client Name",
+            "info": "Jimena"
+          },
+          {
+            "type": "textarea",
+            "id": "client_review",
+            "label": "Client Review",
+            "info": "Client review here"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Trustpilot",
+        "category": "Image",
+        "blocks": [
+          {
+            "type": "review"
+          },
+          {
+            "type": "review"
+          },
+          {
+            "type": "review"
+          },
+          {
+            "type": "review"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
