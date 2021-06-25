@@ -1,0 +1,262 @@
+{% if section.settings.divider %}<div class="section--divider">{% endif %}
+
+<div
+  class="trustpilot-reviews"
+  data-section-id="{{ section.id }}"
+  data-section-type="testimonials">
+  {% if section.settings.title != blank %}
+    <div class="section-header text-center">
+      <h2><strong>{{ section.settings.title }}</strong></h2>
+      <span class="cv__line"></span>
+    </div>
+  {% endif %}
+
+  {% if section.blocks.size > 0 %}
+    <div class="testimonials-wrapper text-{{ section.settings.align_text }}">
+      <div class="testimonials-slider swiper-container mySwiper" id="Testimonials-{{ section.id }}" data-count="{{ section.blocks.size }}">
+        <div class="swiper-wrapper">
+        {% for block in section.blocks %}
+          <div
+            class="swiper-slide testimonials-slide--{{ block.id }}"
+            data-aos="row-of-{{ section.blocks.size }}"
+            {{ block.shopify_attributes }}>
+            <blockquote class="testimonials-slider__text">
+              {% if block.settings.image != blank %}
+                <div
+                  class="image-wrap-new text-spacing testimonail-image{% if section.settings.round_images %} testimonail-image--round{% endif %}">
+                  {%- assign img_url = block.settings.image | img_url: '700x700' -%}
+                  <img class="lazyload" src="{{ img_url }}" alt="{{ block.settings.image.alt }}">
+                </div>
+              {% endif %}
+              <div class="tcon">
+              <img class="trustpilot-stars" src="{{ 'stars-5.png' | asset_url }}" alt="5 Stars Ratings">
+              {% if block.settings.author != blank %}
+                <cite><strong>{{ block.settings.author | escape }}</strong></cite>
+              {% endif %}
+              {% if block.settings.testimonial != blank %}
+                <div class="rte-setting text-spacing">{{ block.settings.testimonial }}</div>
+              {% endif %}
+              </div>
+            </blockquote>
+          </div>
+        {% endfor %}
+        </div>
+      </div>
+    </div>
+  {% endif %}{% comment %}
+  <div class="section-header text-center">
+    <div class="rate_first only_rate">
+      <img src="{{ 'onlystar.png' | asset_url }}">
+      <h2>Trustpilot</h2>
+    </div>
+    <img class="trustpilot-stars-big" src="{{ 'stars-5.png' | asset_url }}" alt="5 Stars Ratings">
+    <div class="avarage_rate">
+      <p>{{ section.settings.subtitle }}</p>
+    </div>
+  </div>{% endcomment %}
+</div>
+
+{% if section.settings.divider %}</div>{% endif %}
+
+{% schema %}
+  {
+    "name": "Trustpilot",
+    "class": "trustpilot-section-main index-section",
+    "max_blocks": 9,
+    "settings": [
+      {
+        "type": "textarea",
+        "id": "title",
+        "label": "Heading",
+        "default": "Testimonials"
+      },
+      {
+        "type": "textarea",
+        "id": "subtitle",
+        "label": "Sub Heading",
+        "default": "4.8/5 Comentarios auditados"
+      },
+      {
+        "type": "select",
+        "id": "align_text",
+        "label": "Text alignment",
+        "default": "left",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Centered"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "round_images",
+        "label": "Circular images"
+      },
+      {
+        "type": "checkbox",
+        "id": "divider",
+        "label": "Show section divider",
+        "default": false
+      }
+    ],
+    "blocks": [
+      {
+        "type": "testimonial",
+        "name": "Testimonial",
+        "settings": [
+          {
+            "type": "richtext",
+            "id": "testimonial",
+            "label": "Text",
+            "default": "<p>Add customer reviews and testimonials to showcase your store’s happy customers.</p>"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Author's image"
+          },
+          {
+            "type": "text",
+            "id": "author",
+            "label": "Author",
+            "default": "Author's name"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Trustpilot",
+        "category": "Text",
+        "blocks": [
+          {
+            "type": "testimonial"
+          },
+          {
+            "type": "testimonial"
+          },
+          {
+            "type": "testimonial"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
+
+<style>
+.testimonials-wrapper {
+    width: 98%;
+    margin: 0 auto;
+}
+.review-item__stars .loox-icon {
+    margin: 0 1px;
+    padding: 4px;
+    background: #009e61;
+    color: #fff;
+}
+.swiper-slide .testimonials-slider__text {
+    background: #fff;
+    margin-right: 5px !important;
+    box-shadow: 0 0 12px 0 #d2d2d2;
+    text-align: left !important;
+    border: 1px solid #ddd;
+    padding: 0;
+}
+.swiper-slide .testimonials-slider__text .tcon {
+    padding: 0 15px;
+}
+.testimonials-slider__text .rte-setting {
+    min-height: 90px;
+}
+.testimonail-image img {
+    max-height: 400px;
+    object-fit: cover;
+}
+.trustpilot-section-main .trustpilot-stars {
+    max-width: 120px;
+}
+.trustpilot-section-main.index-section {
+    margin: 0 !important;
+}
+.rate_first {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 0px;
+}
+.rate_first img {
+    width: 65px;
+    margin: 2px;
+}
+.rate_first h2, .rate_first .h2 {
+    margin: 0;
+    font-size: 40px;
+    font-weight: 600;
+    font-family: inherit;
+}
+.cv__line {
+    display: inline-block;
+    width: 100px;
+    height: 3px;
+    background-color: #19e3c1;
+}
+.trustpilot-reviews h2 {
+    margin-bottom: 0;
+    line-height: 20px;
+}
+.trustpilot-reviews blockquote cite {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+.trustpilot-reviews blockquote cite:before {
+    content: none;
+}
+.trustpilot-reviews blockquote p {
+    margin-bottom: 0;
+    font-size: 16px;
+}
+@media only screen and (min-width: 590px) {
+ .trustpilot-reviews {
+   background-color: #FAFAFA;
+   padding: 50px 0;
+ }
+  .only_rate {
+    padding-top: 60px;
+ }
+ img.trustpilot-stars-big {
+    max-width: 300px;
+    margin: 0 auto;
+ }
+}
+@media only screen and (max-width: 589px) {
+ .trustpilot-reviews {
+  background-color: #FAFAFA;
+  padding: 20px 0;
+ }
+ .only_rate {
+    padding-top: 20px;
+ }
+  img.trustpilot-stars-big {
+    max-width: 265px;
+    margin: 0 auto;
+  }
+}
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script>
+  var swiper = new Swiper(".mySwiper", {
+    slidesPerView: 5,
+    spaceBetween: 20,
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: false,
+    },
+  });
+</script>
