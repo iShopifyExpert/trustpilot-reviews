@@ -250,13 +250,27 @@
 </style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script>
+<script type="text/javascript">
   var swiper = new Swiper(".mySwiper", {
-    slidesPerView: 5,
+    slidesPerView: 1,
     spaceBetween: 20,
     pagination: {
       el: ".swiper-pagination",
       clickable: false,
+    },
+    breakpoints: {
+      640: {
+        slidesPerView: 2,
+        spaceBetween: 50,
+      },
+      768: {
+        slidesPerView: 4,
+        spaceBetween: 20,
+      },
+      1024: {
+        slidesPerView: 5,
+        spaceBetween: 20,
+      },
     },
   });
 </script>
